@@ -19,19 +19,23 @@ public class roid extends JFrame{
     }
 }
 
-class Polyline{     //ChatGPT made up a class called polyline and told me to import it from java.awt, dosent exist so i made this
+class SpaceShip{     
     public int[] xpoints, ypoints;
     public int npoints;
+    public static int midx, midy;
 
-    public Polyline(int[] x, int[] y, int n){
+    public SpaceShip(int[] x, int[] y, int n){
         xpoints = x;
         ypoints = y;
         npoints = n;
+        midx = xpoints[2];
+        midy = ypoints[0];
         
     }
 
     public void translate(int movex, int movey){
-
+        midx += movex;
+        midy += movey;
         for(int i =0; i < npoints; i++){
             xpoints[i] += movex;
             ypoints[i] += movey;
@@ -42,8 +46,9 @@ class Polyline{     //ChatGPT made up a class called polyline and told me to imp
 class GamePanel extends JPanel implements KeyListener, ActionListener, MouseListener{
     private int ballx, bally;
     private int mousex, mousey;
-    private Polyline ship = new Polyline(new int[] {mousex - 10, mousex + 10, mousex, mousex +15, mousex, mousex - 15},
-     new int[] {mousey, mousey, mousey - 25, mousey + 10, mousey - 25,mousey+10},
+    private int posx = 400, posy = 300;
+    private SpaceShip ship = new SpaceShip(new int[] {posx - 10, posx + 10, posx, posx +15, posx, posx - 15},
+     new int[] {posy, posy, posy - 25, posy + 10, posy - 25, posy + 10},
       6);
 
     private int tip, rCorner, lCorner;
@@ -68,6 +73,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener, MouseList
         movex += (keys[KeyEvent.VK_LEFT] ? -5 : keys[KeyEvent.VK_RIGHT] ? 5 : 0);
         movey += (keys[KeyEvent.VK_UP] ? -5 : keys[KeyEvent.VK_DOWN] ? 5 : 0);
         ship.translate(movex, movey);
+        ship.translate((SpaceShip.midx >= 800 ? -800 : SpaceShip.midx <=0 ? 800 : 0), (SpaceShip.midy >=600 ? -600 : SpaceShip.midy <= 0 ? 600 : 0));
 
     }
 
